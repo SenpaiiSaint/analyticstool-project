@@ -1,0 +1,4 @@
+[
+    { "id": 1, "title": "Sales Q1", "data": [10, 20, 30, 40] },
+    { "id": 2, "title": "User Growth", "data": [5, 15, 25, 35] }
+]

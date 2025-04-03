@@ -8,18 +8,18 @@ export default function HomePage() {
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col items-center justify-center bg-stone-100 p-4"
+      className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-4xl font-bold mb-4"> Analytics & Reporting Tool</h1>
+      <h1 className="text-4xl text-black font-bold mb-4"> Analytics & Reporting Tool</h1>
       {!session ? (
         <>
-        <p className="mb-4">Please SIGN IN to access your dashboard.</p>
+        <p className="mb-4 text-black">Please SIGN IN to access your dashboard.</p>
         <button
           onClick={() => signIn()}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="px-4 py-2 cursor-pointer bg-blue-600 text-white rounded hover:bg-blue-700 transition"
           >
             Sign In
           </button>
