@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/client"
+  provider      = "prisma-client-js"
+  output        = "./generated/client"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -110,3 +110,4 @@ model ReportTag {
   @@id([reportId, tagId])
   @@index([tagId], map: "tag_id_idx")
 }
+
