@@ -222,6 +222,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -229,7 +233,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../../../.env"
   },
   "relativePath": "../../../..",
@@ -248,8 +252,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String      @id @default(uuid())\n  name          String?\n  email         String?     @unique\n  emailVerified DateTime?\n  image         String?\n  role          String      @default(\"user\")\n  createdAt     DateTime    @default(now())\n  updatedAt     DateTime    @updatedAt\n  accounts      Account[]\n  dashboards    Dashboard[]\n  reports       Report[]\n  sessions      Session[]\n\n  @@index([email], map: \"user_email_idx\")\n}\n\nmodel Account {\n  id                String  @id @default(uuid())\n  userId            String\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String?\n  access_token      String?\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String?\n  session_state     String?\n  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n}\n\nmodel Session {\n  id           String   @id @default(uuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String   @unique\n  expires    DateTime\n\n  @@unique([identifier, token])\n}\n\nmodel Dashboard {\n  id          String            @id @default(uuid())\n  name        String\n  description String?\n  createdAt   DateTime          @default(now())\n  updatedAt   DateTime          @updatedAt\n  userId      String\n  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)\n  reports     DashboardReport[]\n}\n\nmodel Report {\n  id         String            @id @default(uuid())\n  title      String\n  data       Json\n  createdAt  DateTime          @default(now())\n  updatedAt  DateTime          @updatedAt\n  userId     String?\n  viewCount  Int               @default(0)\n  dashboards DashboardReport[]\n  User       User?             @relation(fields: [userId], references: [id], onDelete: Cascade)\n  tags       ReportTag[]\n}\n\nmodel DashboardReport {\n  dashboardId String\n  reportId    String\n  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)\n  report      Report    @relation(fields: [reportId], references: [id], onDelete: Cascade)\n\n  @@id([dashboardId, reportId])\n}\n\n/// *\n/// * Tag System to categorize or label reports\nmodel Tag {\n  id      String      @id @default(uuid())\n  name    String      @unique(map: \"tag_name_unique\")\n  reports ReportTag[]\n}\n\nmodel ReportTag {\n  reportId String\n  tagId    String\n  report   Report @relation(fields: [reportId], references: [id], onDelete: Cascade)\n  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)\n\n  @@id([reportId, tagId])\n  @@index([tagId], map: \"tag_id_idx\")\n}\n",
-  "inlineSchemaHash": "b038d3efd7b73e27adce3341b5da0eea1220d2183f9e2522f81112cd35006912",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"app/generated/prisma/client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String      @id @default(uuid())\n  name          String?\n  email         String?     @unique\n  emailVerified DateTime?\n  image         String?\n  role          String      @default(\"user\")\n  createdAt     DateTime    @default(now())\n  updatedAt     DateTime    @updatedAt\n  accounts      Account[]\n  dashboards    Dashboard[]\n  reports       Report[]\n  sessions      Session[]\n\n  @@index([email], map: \"user_email_idx\")\n}\n\nmodel Account {\n  id                String  @id @default(uuid())\n  userId            String\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String?\n  access_token      String?\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String?\n  session_state     String?\n  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n}\n\nmodel Session {\n  id           String   @id @default(uuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String   @unique\n  expires    DateTime\n\n  @@unique([identifier, token])\n}\n\nmodel Dashboard {\n  id          String            @id @default(uuid())\n  name        String\n  description String?\n  createdAt   DateTime          @default(now())\n  updatedAt   DateTime          @updatedAt\n  userId      String\n  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)\n  reports     DashboardReport[]\n}\n\nmodel Report {\n  id         String            @id @default(uuid())\n  title      String\n  data       Json\n  createdAt  DateTime          @default(now())\n  updatedAt  DateTime          @updatedAt\n  userId     String?\n  viewCount  Int               @default(0)\n  dashboards DashboardReport[]\n  User       User?             @relation(fields: [userId], references: [id], onDelete: Cascade)\n  tags       ReportTag[]\n}\n\nmodel DashboardReport {\n  dashboardId String\n  reportId    String\n  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)\n  report      Report    @relation(fields: [reportId], references: [id], onDelete: Cascade)\n\n  @@id([dashboardId, reportId])\n}\n\n/// *\n/// * Tag System to categorize or label reports\nmodel Tag {\n  id      String      @id @default(uuid())\n  name    String      @unique(map: \"tag_name_unique\")\n  reports ReportTag[]\n}\n\nmodel ReportTag {\n  reportId String\n  tagId    String\n  report   Report @relation(fields: [reportId], references: [id], onDelete: Cascade)\n  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)\n\n  @@id([reportId, tagId])\n  @@index([tagId], map: \"tag_id_idx\")\n}\n",
+  "inlineSchemaHash": "97197638c8a7b908a60648248d19819365837d0222b6aa06f31ca4f1e3411df6",
   "copyEngine": true
 }
 
@@ -290,6 +294,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "prisma/app/generated/prisma/client/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "prisma/app/generated/prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/app/generated/prisma/client/schema.prisma")
